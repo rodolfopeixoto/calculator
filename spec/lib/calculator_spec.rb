@@ -10,7 +10,7 @@ RSpec.describe Calculator do
   context 'operations' do
     describe '#sum' do
       it 'return the result of sum one and two' do
-        expect(@calculator.sum(1,2)).to eq(3)
+        expect(@calculator.add(1,2)).to eq(3)
       end
     end
     describe '#subtract' do
