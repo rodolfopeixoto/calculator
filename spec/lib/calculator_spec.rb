@@ -13,5 +13,20 @@ RSpec.describe Calculator do
         expect(@calculator.sum(1,2)).to eq(3)
       end
     end
+    describe '#subtract' do
+      it 'return the result of subtract two and one' do
+        expect(@calculator.subtract(2,1)).to eq(1)
+      end
+    end
+    describe '#multiply' do
+      it 'return the result of multiply two and one' do
+        expect(@calculator.multiply(2,1)).to eq(2)
+      end
+    end
+    describe '#divide' do
+      it 'return the result of divide two and two' do
+        expect(@calculator.divide(2,2)).to eq(1)
+      end
+    end
   end
 end
