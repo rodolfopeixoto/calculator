@@ -1,12 +1,11 @@
-require "#{Rails.root}/app/lib/calculator.rb"
 class CalculatorsController < ApplicationController
-  include Calculator
+  include CalculatorService
 
   def index
   end
 
   def processing
-      # @result = operator(params[:operator], params[:number1], params[:number2])
-      render json: params
+      result = operator(params[:operator], params[:number1], params[:number2])
+      render json: result
   end
 end

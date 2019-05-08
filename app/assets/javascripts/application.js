@@ -27,7 +27,6 @@ document.addEventListener('DOMContentLoaded',function(){
       const previousKeyType = calculator.dataset.previousKeyType
       const operation = ''
 
-      // Remove .is-depressed class from all keys
     Array.from(key.parentNode.children)
       .forEach(key_value => key_value.classList.remove('is-depressed'))
 
@@ -79,31 +78,25 @@ document.addEventListener('DOMContentLoaded',function(){
           } else {
             key.textContent = 'AC'
           }
-        display.textContent = 0
-          calculator.dataset.previousKeyType = 'clear'
+            display.textContent = 0
+            calculator.dataset.previousKeyType = 'clear'
         }
 
         if(action === 'calculate'){
           const number1 = calculator.dataset.number1
           const operator = calculator.dataset.operator
           const number2 = displayedNumber
+          console.log(number2)
 
-          result_calculator = {
-            calculate: {
-              number1: number1,
-              operator: operator,
-              number2: number2,
-            }
-          }
+          result_calculator = `number1=${number1}&operator=${operator}&number2=${number2}`
 
               Rails.ajax({
-                type: "GET",
+                type: 'GET',
                 url: '/calculator/processing',
+                dataType: 'json',
                 data: result_calculator,
                 success: function(response){
-                  console.log("Resultado: ", response);
-                  console.log(result_calculator);
-                  display.textContent = response.result
+                  display.textContent = response
                 },
                 error: function(response){
                   console.log(response);
