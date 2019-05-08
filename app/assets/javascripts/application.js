@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded',function(){
       const keyContent = key.textContent
       const displayedNumber = display.textContent
       const previousKeyType = calculator.dataset.previousKeyType
+      const operation = ''
 
       // Remove .is-depressed class from all keys
     Array.from(key.parentNode.children)
@@ -38,6 +39,8 @@ document.addEventListener('DOMContentLoaded',function(){
           display.textContent = displayedNumber + keyContent
         }
 
+        calculator.dataset.previousKey = 'number'
+
       }
 
       if(
@@ -46,22 +49,42 @@ document.addEventListener('DOMContentLoaded',function(){
         action === 'multiply' ||
         action === 'divide'
         ){
+
+          const number1 = calculator.dataset.number1
+          const operator = calculator.dataset.operator
+          const number2 = displayedNumber
+
           key.classList.add('is-depressed');
           calculator.dataset.number1 = displayedNumber
-          console.log("", action)
           calculator.dataset.previousKeyType = 'operator'
+          calculator.dataset.operator = action
         }
 
         if(action === 'decimal'){
           display.textContent = displayedNumber + '.'
+          calculator.dataset.previousKey = 'decimal'
         }
 
-        if(action === 'clear'){
-          console.log('clear key');
+        if (action !== 'clear') {
+          const clearButton = calculator.querySelector('[data-action=clear]')
+          clearButton.textContent = 'CE'
+        }
+
+        if (action === 'clear') {
+          if (key.textContent === 'AC') {
+            calculator.dataset.firstValue = ''
+            calculator.dataset.modValue = ''
+            calculator.dataset.operator = ''
+            calculator.dataset.previousKeyType = ''
+          } else {
+            key.textContent = 'AC'
+          }
+        display.textContent = 0
+          calculator.dataset.previousKeyType = 'clear'
         }
 
         if(action === 'calculate'){
-          const number1 = displayedNumber
+          const number1 = calculator.dataset.number1
           const operator = calculator.dataset.operator
           const number2 = displayedNumber
 
@@ -73,20 +96,21 @@ document.addEventListener('DOMContentLoaded',function(){
             }
           }
 
-            Rails.ajax({
-              type: "GET",
-              url: '/calculator/processing',
-              data: result_calculator,
-              success: function(response){
-                console.log(response);
-                console.log(result_calculator);
-                display.textContent = response.result
-              },
-              error: function(response){
-                console.log(response);
-              }
-            })
+              Rails.ajax({
+                type: "GET",
+                url: '/calculator/processing',
+                data: result_calculator,
+                success: function(response){
+                  console.log("Resultado: ", response);
+                  console.log(result_calculator);
+                  display.textContent = response.result
+                },
+                error: function(response){
+                  console.log(response);
+                }
+              })
 
+            calculator.dataset.previousKeyType = 'calculate'
           }
 
         }
